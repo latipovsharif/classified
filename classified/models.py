@@ -14,18 +14,24 @@ class City(models.Model):
     # страны, области и города
     name = models.CharField(max_length=255, unique=True)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = 'Город'
         verbose_name_plural = 'Города'
 
 
-class Classfied(models.Model):
+class Classified(models.Model):
     """Объявление"""
     header = models.CharField(max_length=255)
     body = models.TextField()
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     views = models.PositiveIntegerField() # Количество просмотров объявления
+
+    def __str__(self):
+        return self.header
 
     class Meta:
         verbose_name = 'Объявление'
@@ -37,9 +43,11 @@ class ViewCounter(models.Model):
     При просмотре объявления добавляется запись
     которая в последующем будет обработан Celery
     """
-    classfield = models.ForeignKey(Classfied, on_delete=models.CASCADE)
-    value = models.PositiveIntegerField()
+    classified = models.ForeignKey(Classified, on_delete=models.CASCADE)
     state = models.PositiveIntegerField(choices=STATES)
+
+    def __str__(self):
+        return "{} - {}".format(self.classified, self.state)
 
     class Meta:
         verbose_name = 'Счетчик'

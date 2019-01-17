@@ -1,0 +1,24 @@
+{% extends '../base.html' %}
+
+{% block content %}
+<div class="row">
+    {% for obj in object_list %}
+    <div class="col-md-4">
+            <div class="card mb-4 box-shadow">
+                <div class="card-body">
+                    <p class="card-title">{{obj.header}}</p>
+                    <p class="card-text">{{obj.body}}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a href="{% url 'classified:detail' pk=obj.pk %}" class="btn btn-sm btn-outline-secondary">
+                                view
+                            </a>
+                        </div>
+                        <small class="text-muted">{{obj.views}}</small>
+                    </div>
+                </div>
+            </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
